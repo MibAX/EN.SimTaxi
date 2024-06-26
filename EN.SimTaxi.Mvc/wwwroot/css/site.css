@@ -1,22 +1,77 @@
-html {
-  font-size: 14px;
+.bg-section {
+    background-color: #fef0ea !important;
 }
 
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+.section-border {
+    border-bottom: 1px solid #f2e0d8;
 }
 
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+.py-6 {
+    padding-top: 5rem !important;
+    padding-bottom: 5rem !important;
 }
 
-html {
-  position: relative;
-  min-height: 100%;
+.title-text {
+    font-size: 3rem;
+    font-weight: bold;
+    color: #553d38;
 }
 
-body {
-  margin-bottom: 60px;
+.sub-title-text {
+    color: #a4836f;
 }
+
+.section-title {
+    color: #bfb4b0;
+}
+
+.sub-section-title {
+    color: #694836;
+}
+
+.text-sub-title {
+    color: #694836 !important;
+}
+
+.social-links .social-link {
+    width: 40px;
+    height: 40px;
+    text-align: center;
+    font-size: 1.4rem;
+    padding-top: 0.2rem !important;
+    background-color: #f9b800;
+}
+
+    .social-links .social-link:hover {
+        opacity: 1;
+    }
+
+.a-hover:hover {
+    text-decoration: underline !important;
+}
+
+.fs-7 {
+    font-size: 0.75rem !important;
+}
+
+.btn-back-to-top {
+    position: fixed;
+    bottom: 8px;
+    right: 8px;
+}
+
+    .btn-back-to-top a {
+        display: block;
+        width: 42px;
+        height: 42px;
+        padding-top: 10px;
+        background-color: #f9b800;
+        border-radius: 10px;
+        text-align: center;
+    }
+
+    .btn-back-to-top i {
+        color: #fff;
+        font-size: 1.2rem;
+        font-weight: bold;
+    }
