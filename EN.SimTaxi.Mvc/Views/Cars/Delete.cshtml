@@ -8,7 +8,10 @@
 
     <h1>Delete</h1>
 
-    <h3>Are you sure you want to delete this Car?</h3>
+    <h3>
+        Are you sure you want to delete
+        <span class="text-danger">@Model.Model - @Model.PlateNumber</span>?
+    </h3>
     <div>
         <hr />
         <dl class="row">
@@ -53,7 +56,7 @@
         <form asp-action="Delete" class="mt-4">
             <input type="hidden" asp-for="Id" />
             <a asp-action="Index" class="btn btn-secondary">Cancel</a>
-            <input type="submit" value="Delete" class="btn btn-danger" />
+            <input type="submit" value="Delete" class="btn btn-danger ms-2" />
         </form>
 
     </div>
