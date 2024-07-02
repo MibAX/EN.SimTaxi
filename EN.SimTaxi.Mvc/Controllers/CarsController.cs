@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using EN.SimTaxi.Mvc.Data;
 using EN.SimTaxi.Mvc.Entities.Cars;
@@ -12,6 +7,8 @@ namespace EN.SimTaxi.Mvc.Controllers
 {
     public class CarsController : Controller
     {
+        #region Data and Constructor
+
         private readonly ApplicationDbContext _context;
 
         public CarsController(ApplicationDbContext context)
@@ -19,10 +16,16 @@ namespace EN.SimTaxi.Mvc.Controllers
             _context = context;
         }
 
+        #endregion
+
+        #region Actions
+
         // GET: Cars
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Cars.ToListAsync());
+            List<Car> cars = await _context.Cars.ToListAsync();
+
+            return View(cars);
         }
 
         // GET: Cars/Details/5
@@ -130,10 +133,14 @@ namespace EN.SimTaxi.Mvc.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
+        #endregion
+
+        #region Private Methods
 
         private bool CarExists(int id)
         {
             return _context.Cars.Any(e => e.Id == id);
-        }
+        } 
+        #endregion
     }
 }
