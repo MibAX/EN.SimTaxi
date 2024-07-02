@@ -14,7 +14,7 @@
 
     </div>
 
-
+    
     <hr class="mt-1" />
 
     <table class="table mt-5">
@@ -42,45 +42,76 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var item in Model)
+            @foreach (var car in Model)
             { // 2 cars => 2 iteratons in the loop
                 <tr>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Model)
+                        @Html.DisplayFor(modelItem => car.Model)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Color)
+                        @Html.DisplayFor(modelItem => car.Color)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Year)
+                        @Html.DisplayFor(modelItem => car.Year)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.PlateNumber)
+                        @Html.DisplayFor(modelItem => car.PlateNumber)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.PowerType)
+                        @Html.DisplayFor(modelItem => car.PowerType)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.CarType)
+                        @Html.DisplayFor(modelItem => car.CarType)
                     </td>
                     <td>
 
-                        <a asp-action="Edit" asp-route-id="@item.Id" class="text-decoration-none" title="Edit">
+                        <a asp-action="Edit" asp-route-id="@car.Id" class="text-decoration-none" title="Edit">
                             <i class="fa-solid fa-pen"></i>
                         </a>
 
-                        <a asp-action="Details" asp-route-id="@item.Id" class="ms-2 text-decoration-none text-info" title="Details">
+                        <a asp-action="Details" asp-route-id="@car.Id" class="ms-2 text-decoration-none text-info" title="Details">
                             <i class="fa-solid fa-circle-info"></i>
                         </a>
 
-                        <a asp-action="Delete" asp-route-id="@item.Id" class="ms-2 text-decoration-none text-danger" title="Delete">
+                        <a class="ms-2 text-decoration-none text-danger pointer" title="Delete" data-bs-toggle="modal" data-bs-target="#deleteCar_@car.Id">
                             <i class="fa-solid fa-trash"></i>
                         </a>
+
+                        <!-- Delete Modal -->
+                        <div class="modal fade" id="deleteCar_@car.Id" tabindex="-1" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Delete Car</h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <h5>
+                                            Are you sure you want to delete <span class="text-danger">@car.Model - @car.PlateNumber</span>?
+                                        </h5>
+                                    </div>
+                                    <div class="modal-footer">
+                                        
+                                        <form asp-action="Delete" class="mt-4">
+                                            <input type="hidden" name="id" value="@car.Id" />
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                            <button type="submit" class="btn btn-danger ms-2">Delete</button>
+                                        </form>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
                     </td>
                 </tr>
             }
         </tbody>
     </table>
+
+
+
+    
+
 
 </div>
