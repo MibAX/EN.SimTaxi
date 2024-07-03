@@ -4,6 +4,7 @@ using EN.SimTaxi.Mvc.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EN.SimTaxi.Mvc.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240703203223_Driver_Relation_With_Car")]
+    partial class Driver_Relation_With_Car
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -37,7 +40,7 @@ namespace EN.SimTaxi.Mvc.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("DriverId")
+                    b.Property<int>("DriverId")
                         .HasColumnType("int");
 
                     b.Property<string>("Model")
@@ -294,7 +297,9 @@ namespace EN.SimTaxi.Mvc.Data.Migrations
                 {
                     b.HasOne("EN.SimTaxi.Mvc.Entities.Drivers.Driver", "Driver")
                         .WithMany("Cars")
-                        .HasForeignKey("DriverId");
+                        .HasForeignKey("DriverId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Driver");
                 });

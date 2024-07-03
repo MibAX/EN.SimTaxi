@@ -1,4 +1,5 @@
-﻿using EN.SimTaxi.Mvc.Enums;
+﻿using EN.SimTaxi.Mvc.Entities.Drivers;
+using EN.SimTaxi.Mvc.Enums;
 
 namespace EN.SimTaxi.Mvc.Entities.Cars
 {
@@ -11,6 +12,10 @@ namespace EN.SimTaxi.Mvc.Entities.Cars
         public string PlateNumber { get; set; } // 20 - 8521
         public PowerType PowerType { get; set; } // PowerType.Hybird
         public CarType CarType { get; set; } // CarType.Sedan
+
+
+        public int? DriverId { get; set; } // DriverId = 1 => Sameer Abu Laila
+        public Driver? Driver { get; set; }
 
     }
 }
