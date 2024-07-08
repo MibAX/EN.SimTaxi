@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EN.SimTaxi.Mvc.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240703203223_Driver_Relation_With_Car")]
-    partial class Driver_Relation_With_Car
+    [Migration("20240708200049_Make_Car_Driver_Nullable_Optional")]
+    partial class Make_Car_Driver_Nullable_Optional
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -40,7 +40,7 @@ namespace EN.SimTaxi.Mvc.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("DriverId")
+                    b.Property<int?>("DriverId")
                         .HasColumnType("int");
 
                     b.Property<string>("Model")
@@ -88,7 +88,7 @@ namespace EN.SimTaxi.Mvc.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Driver");
+                    b.ToTable("Drivers");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -297,9 +297,7 @@ namespace EN.SimTaxi.Mvc.Data.Migrations
                 {
                     b.HasOne("EN.SimTaxi.Mvc.Entities.Drivers.Driver", "Driver")
                         .WithMany("Cars")
-                        .HasForeignKey("DriverId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("DriverId");
 
                     b.Navigation("Driver");
                 });

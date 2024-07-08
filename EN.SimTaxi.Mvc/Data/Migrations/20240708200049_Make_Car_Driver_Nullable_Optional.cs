@@ -5,13 +5,13 @@
 namespace EN.SimTaxi.Mvc.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class Car_Driver_Nullable_Optional : Migration
+    public partial class Make_Car_Driver_Nullable_Optional : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_Cars_Driver_DriverId",
+                name: "FK_Cars_Drivers_DriverId",
                 table: "Cars");
 
             migrationBuilder.AlterColumn<int>(
@@ -23,10 +23,10 @@ namespace EN.SimTaxi.Mvc.Data.Migrations
                 oldType: "int");
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Cars_Driver_DriverId",
+                name: "FK_Cars_Drivers_DriverId",
                 table: "Cars",
                 column: "DriverId",
-                principalTable: "Driver",
+                principalTable: "Drivers",
                 principalColumn: "Id");
         }
 
@@ -34,7 +34,7 @@ namespace EN.SimTaxi.Mvc.Data.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_Cars_Driver_DriverId",
+                name: "FK_Cars_Drivers_DriverId",
                 table: "Cars");
 
             migrationBuilder.AlterColumn<int>(
@@ -48,10 +48,10 @@ namespace EN.SimTaxi.Mvc.Data.Migrations
                 oldNullable: true);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Cars_Driver_DriverId",
+                name: "FK_Cars_Drivers_DriverId",
                 table: "Cars",
                 column: "DriverId",
-                principalTable: "Driver",
+                principalTable: "Drivers",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Cascade);
         }

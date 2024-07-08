@@ -14,8 +14,7 @@ namespace EN.SimTaxi.Mvc.Entities.Cars
         public CarType CarType { get; set; } // CarType.Sedan
 
 
-        public int? DriverId { get; set; } // DriverId = 1 => Sameer Abu Laila
+        public int? DriverId { get; set; }
         public Driver? Driver { get; set; }
-
     }
 }
