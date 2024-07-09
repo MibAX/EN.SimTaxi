@@ -20,11 +20,17 @@ namespace EN.SimTaxi.Mvc.Controllers
 
         #region Actions
 
+        [HttpGet]
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Drivers.ToListAsync());
+            var drivers = await _context
+                                    .Drivers
+                                    .ToListAsync();
+
+            return View(drivers);
         }
 
+        [HttpGet]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -32,8 +38,10 @@ namespace EN.SimTaxi.Mvc.Controllers
                 return NotFound();
             }
 
-            var driver = await _context.Drivers
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var driver = await _context
+                                    .Drivers
+                                    .FirstOrDefaultAsync(driver => driver.Id == id);
+
             if (driver == null)
             {
                 return NotFound();
@@ -42,6 +50,7 @@ namespace EN.SimTaxi.Mvc.Controllers
             return View(driver);
         }
 
+        [HttpGet]
         public IActionResult Create()
         {
             return View();
@@ -49,7 +58,7 @@ namespace EN.SimTaxi.Mvc.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,FirstName,LastName,DateOfBirth,Gender")] Driver driver)
+        public async Task<IActionResult> Create(Driver driver)
         {
             if (ModelState.IsValid)
             {
@@ -60,6 +69,7 @@ namespace EN.SimTaxi.Mvc.Controllers
             return View(driver);
         }
 
+        [HttpGet]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -67,17 +77,21 @@ namespace EN.SimTaxi.Mvc.Controllers
                 return NotFound();
             }
 
-            var driver = await _context.Drivers.FindAsync(id);
+            var driver = await _context
+                                    .Drivers
+                                    .FindAsync(id);
+
             if (driver == null)
             {
                 return NotFound();
             }
+
             return View(driver);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,FirstName,LastName,DateOfBirth,Gender")] Driver driver)
+        public async Task<IActionResult> Edit(int id, Driver driver)
         {
             if (id != driver.Id)
             {
@@ -102,8 +116,10 @@ namespace EN.SimTaxi.Mvc.Controllers
                         throw;
                     }
                 }
+
                 return RedirectToAction(nameof(Index));
             }
+
             return View(driver);
         }
 
@@ -111,13 +127,18 @@ namespace EN.SimTaxi.Mvc.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var driver = await _context.Drivers.FindAsync(id);
-            if (driver != null)
+            var driver = await _context
+                                    .Drivers
+                                    .FindAsync(id);
+
+            if (driver == null)
             {
-                _context.Drivers.Remove(driver);
+                return NotFound();
             }
 
+            _context.Drivers.Remove(driver);
             await _context.SaveChangesAsync();
+
             return RedirectToAction(nameof(Index));
         }
 
@@ -127,7 +148,7 @@ namespace EN.SimTaxi.Mvc.Controllers
 
         private bool DriverExists(int id)
         {
-            return _context.Drivers.Any(e => e.Id == id);
+            return _context.Drivers.Any(driver => driver.Id == id);
         } 
 
         #endregion
