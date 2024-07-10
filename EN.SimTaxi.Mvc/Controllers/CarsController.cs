@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using EN.SimTaxi.Mvc.Data;
 using EN.SimTaxi.Mvc.Entities.Cars;
+using EN.SimTaxi.Mvc.Models.Cars;
 
 namespace EN.SimTaxi.Mvc.Controllers
 {
@@ -24,9 +25,32 @@ namespace EN.SimTaxi.Mvc.Controllers
         {
             var cars = await _context
                                 .Cars
+                                .Include(car => car.Driver)
                                 .ToListAsync();
             
-            return View(cars);
+
+            List<CarViewModel> listCarViewModel = new List<CarViewModel>();
+
+            foreach (var car in cars) // 2 cars => two loops
+            {
+                CarViewModel carViewModel = new CarViewModel();
+                carViewModel.Id = car.Id;
+                carViewModel.Model = car.Model;
+                carViewModel.Color = car.Color;
+                carViewModel.Year = car.Year;
+                carViewModel.PlateNumber = car.PlateNumber;
+                carViewModel.PowerType = car.PowerType;
+                carViewModel.CarType = car.CarType;
+
+                if(car.Driver != null)
+                {
+                    carViewModel.DriverFullName = $"{car.Driver.FirstName} {car.Driver.LastName}";
+                }
+ 
+                listCarViewModel.Add(carViewModel);
+            }
+
+            return View(listCarViewModel);
         }
 
         public async Task<IActionResult> Details(int? id)
