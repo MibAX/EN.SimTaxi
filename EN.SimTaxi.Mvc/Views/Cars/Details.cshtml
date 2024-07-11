@@ -1,4 +1,5 @@
-﻿@model EN.SimTaxi.Mvc.Entities.Cars.Car
+﻿@using EN.SimTaxi.Mvc.Models.Cars
+@model CarDetailsViewModel
 
 @{
     ViewData["Title"] = "Details";
@@ -49,6 +50,12 @@
             </dt>
             <dd class="col-sm-10">
                 @Html.DisplayFor(model => model.CarType)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.DriverFullName)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.DriverFullName)
             </dd>
         </dl>
     </div>

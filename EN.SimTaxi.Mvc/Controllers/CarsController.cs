@@ -46,6 +46,7 @@ namespace EN.SimTaxi.Mvc.Controllers
 
             var car = await _context
                                 .Cars
+                                .Include(car => car.Driver)
                                 .Where(car => car.Id == id)
                                 .SingleOrDefaultAsync();
 
@@ -54,7 +55,9 @@ namespace EN.SimTaxi.Mvc.Controllers
                 return NotFound();
             }
 
-            return View(car);
+            var carDetailsViewModel = _mapper.Map<Car, CarDetailsViewModel>(car);
+
+            return View(carDetailsViewModel);
         }
 
         public IActionResult Create()
@@ -64,17 +67,21 @@ namespace EN.SimTaxi.Mvc.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Car car)
+        public async Task<IActionResult> Create(CreateUpdateCarViewModel createUpdateCarViewModel)
         {
             if (ModelState.IsValid)
             {
+                var car = _mapper.Map<CreateUpdateCarViewModel, Car>(createUpdateCarViewModel);
+
                 _context.Add(car);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(car);
+
+            return View(createUpdateCarViewModel);
         }
 
+        [HttpGet]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -83,24 +90,44 @@ namespace EN.SimTaxi.Mvc.Controllers
             }
 
             var car = await _context.Cars.FindAsync(id);
+
             if (car == null)
             {
                 return NotFound();
             }
-            return View(car);
+
+
+            var createUpdateCarViewModel = _mapper.Map<Car, CreateUpdateCarViewModel>(car);
+
+            return View(createUpdateCarViewModel);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, Car car)
+        public async Task<IActionResult> Edit(int id, CreateUpdateCarViewModel createUpdateCarViewModel)
         {
-            if (id != car.Id)
+            if (id != createUpdateCarViewModel.Id)
             {
                 return NotFound();
             }
 
             if (ModelState.IsValid)
             {
+                var car = await _context
+                                    .Cars
+                                    .Include(car => car.Driver)
+                                    .Where(car => car.Id == id)
+                                    .SingleOrDefaultAsync();
+
+                if (car == null)
+                {
+                    return NotFound();
+                }
+
+
+                _mapper.Map<CreateUpdateCarViewModel, Car>(createUpdateCarViewModel, car); // Copy (Patch) the Car with data from CreateUpdateCarViewModel
+
+
                 try
                 {
                     _context.Update(car);
@@ -119,7 +146,8 @@ namespace EN.SimTaxi.Mvc.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(car);
+
+            return View(createUpdateCarViewModel);
         }
 
         [HttpPost, ActionName("Delete")]

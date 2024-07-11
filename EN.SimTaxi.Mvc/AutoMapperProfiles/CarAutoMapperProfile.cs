@@ -9,6 +9,10 @@ namespace EN.SimTaxi.Mvc.AutoMapperProfiles
         public CarAutoMapperProfile()
         {
             CreateMap<Car, CarViewModel>();
+
+            CreateMap<CreateUpdateCarViewModel, Car>().ReverseMap();
+
+            CreateMap<Car, CarDetailsViewModel>();
         }
     }
 }
