@@ -47,14 +47,18 @@ namespace EN.SimTaxi.Mvc.Controllers
 
             var driver = await _context
                                     .Drivers
-                                    .FirstOrDefaultAsync(driver => driver.Id == id);
+                                    .Include(driver => driver.Cars)
+                                    .Where(driver => driver.Id == id)
+                                    .SingleOrDefaultAsync();
 
             if (driver == null)
             {
-                return NotFound();
+                return NotFound(); // 404
             }
 
-            return View(driver);
+            var driverViewModel = _mapper.Map<Driver, DriverDetailsViewModel>(driver);
+
+            return View(driverViewModel);
         }
 
         [HttpGet]

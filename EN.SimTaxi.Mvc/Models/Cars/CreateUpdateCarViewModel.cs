@@ -7,8 +7,11 @@ namespace EN.SimTaxi.Mvc.Models.Cars
     {
         public int Id { get; set; } 
         public string Model { get; set; } 
-        public string Color { get; set; } 
-        public DateTime Year { get; set; }
+        public string Color { get; set; }
+
+
+        [Display(Name = "Production Date")]
+        public DateTime ProductionDate { get; set; }
 
 
         [Display(Name = "Plate Number")]

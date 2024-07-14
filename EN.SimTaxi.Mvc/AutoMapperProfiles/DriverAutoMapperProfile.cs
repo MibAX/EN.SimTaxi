@@ -9,6 +9,7 @@ namespace EN.SimTaxi.Mvc.AutoMapperProfiles
         public DriverAutoMapperProfile()
         {
             CreateMap<Driver, DriverViewModel>();
+            CreateMap<Driver, DriverDetailsViewModel>();
         }
     }
 }
