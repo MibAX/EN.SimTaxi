@@ -23,5 +23,14 @@ namespace EN.SimTaxi.Mvc.Entities.Drivers
 
             }
         }
+
+        [NotMapped]
+        public int Age
+        {
+            get
+            {
+                return DateTime.Now.Year - DateOfBirth.Year; // for example: 2024 - 2000 => return 24
+            }
+        }
     }
 }

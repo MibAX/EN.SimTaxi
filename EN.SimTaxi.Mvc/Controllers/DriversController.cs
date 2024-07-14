@@ -2,6 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using EN.SimTaxi.Mvc.Data;
 using EN.SimTaxi.Mvc.Entities.Drivers;
+using AutoMapper;
+using EN.SimTaxi.Mvc.Models.Drivers;
 
 namespace EN.SimTaxi.Mvc.Controllers
 {
@@ -10,10 +12,12 @@ namespace EN.SimTaxi.Mvc.Controllers
         #region Data and Const
 
         private readonly ApplicationDbContext _context;
+        private readonly IMapper _mapper;
 
-        public DriversController(ApplicationDbContext context)
+        public DriversController(ApplicationDbContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         #endregion
@@ -27,7 +31,10 @@ namespace EN.SimTaxi.Mvc.Controllers
                                     .Drivers
                                     .ToListAsync();
 
-            return View(drivers);
+            var driverViewModels = _mapper.Map<List<Driver>, List<DriverViewModel>>(drivers);
+
+
+            return View(driverViewModels);
         }
 
         [HttpGet]
