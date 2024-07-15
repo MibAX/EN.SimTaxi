@@ -1,4 +1,5 @@
 ﻿using EN.SimTaxi.Mvc.Enums;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel.DataAnnotations;
 
 namespace EN.SimTaxi.Mvc.Models.Drivers
@@ -7,8 +8,8 @@ namespace EN.SimTaxi.Mvc.Models.Drivers
     {
         public int Id { get; set; }
 
-        [Display(Name = "First Name")]
-        public string FirstName { get; set; }
+        [Display(Name = "First Name")] 
+        public string FirstName { get; set; } // Sameer
 
         [Display(Name = "Last Name")]
         public string LastName { get; set; }
@@ -17,6 +18,11 @@ namespace EN.SimTaxi.Mvc.Models.Drivers
         public DateTime DateOfBirth { get; set; }
         public Gender Gender { get; set; }
 
-        //public List<Car> Cars { get; set; } = [];
+        [Display(Name = "Cars")]
+        public List<int> CarIds { get; set; } = []; // [4, 6, 8]
+
+        //===========================================================
+
+        public MultiSelectList CarsLookup { get; set; }
     }
 }

@@ -25,5 +25,12 @@ namespace EN.SimTaxi.Mvc.Entities.Cars
                 return ProductionDate.Year; // 2024-1-1:12:30:12:1234 => 2024
             }
         }
+
+        [NotMapped]
+        public string Info {
+            get {
+                return $"{Model} - ({PlateNumber})";
+            }  
+        }
     }
 }

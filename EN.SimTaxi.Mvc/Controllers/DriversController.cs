@@ -4,6 +4,7 @@ using EN.SimTaxi.Mvc.Data;
 using EN.SimTaxi.Mvc.Entities.Drivers;
 using AutoMapper;
 using EN.SimTaxi.Mvc.Models.Drivers;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace EN.SimTaxi.Mvc.Controllers
 {
@@ -64,7 +65,11 @@ namespace EN.SimTaxi.Mvc.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            return View();
+            var createUpdateDriverViewModel = new CreateUpdateDriverViewModel();
+
+            createUpdateDriverViewModel.CarsLookup = new MultiSelectList(_context.Cars, "Id", "Info");
+
+            return View(createUpdateDriverViewModel);
         }
 
         [HttpPost]
