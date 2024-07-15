@@ -69,15 +69,18 @@ namespace EN.SimTaxi.Mvc.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Driver driver)
+        public async Task<IActionResult> Create(CreateUpdateDriverViewModel createUpdateDriverViewModel)
         {
             if (ModelState.IsValid)
             {
+                var driver = _mapper.Map<CreateUpdateDriverViewModel, Driver>(createUpdateDriverViewModel);
+
                 _context.Add(driver);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(driver);
+
+            return View(createUpdateDriverViewModel);
         }
 
         [HttpGet]
@@ -97,20 +100,31 @@ namespace EN.SimTaxi.Mvc.Controllers
                 return NotFound();
             }
 
-            return View(driver);
+            var createUpdateDriverViewModel = _mapper.Map<Driver, CreateUpdateDriverViewModel>(driver);
+
+            return View(createUpdateDriverViewModel);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, Driver driver)
+        public async Task<IActionResult> Edit(int id, CreateUpdateDriverViewModel createUpdateDriverViewModel)
         {
-            if (id != driver.Id)
+            if (id != createUpdateDriverViewModel.Id)
             {
                 return NotFound();
             }
 
             if (ModelState.IsValid)
             {
+                var driver = await _context.Drivers.FindAsync(id);
+
+                if (driver == null) 
+                {
+                    return NotFound();
+                }
+
+                _mapper.Map(createUpdateDriverViewModel, driver);
+
                 try
                 {
                     _context.Update(driver);
@@ -131,7 +145,7 @@ namespace EN.SimTaxi.Mvc.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            return View(driver);
+            return View(createUpdateDriverViewModel);
         }
 
         [HttpPost, ActionName("Delete")]
