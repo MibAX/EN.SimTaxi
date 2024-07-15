@@ -51,6 +51,7 @@
                     <th>Model</th>
                     <th>Color</th>
                     <th>Year</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -61,6 +62,11 @@
                         <td>@car.Model</td>
                         <td>@car.Color</td>
                         <td>@car.Year</td>
+                        <td>
+                            <a asp-controller="Cars" asp-action="Details" asp-route-id="@car.Id" class="text-decoration-none text-info" title="Details">
+                                <i class="fa-solid fa-circle-info"></i>
+                            </a>
+                        </td>
                     </tr>
                 }
             </tbody>
