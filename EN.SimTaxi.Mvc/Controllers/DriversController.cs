@@ -101,7 +101,9 @@ namespace EN.SimTaxi.Mvc.Controllers
 
             var driver = await _context
                                     .Drivers
-                                    .FindAsync(id);
+                                    .Include(driver => driver.Cars)
+                                    .Where(driver => driver.Id == id)
+                                    .SingleOrDefaultAsync();
 
             if (driver == null)
             {
@@ -109,6 +111,11 @@ namespace EN.SimTaxi.Mvc.Controllers
             }
 
             var createUpdateDriverViewModel = _mapper.Map<Driver, CreateUpdateDriverViewModel>(driver);
+
+            createUpdateDriverViewModel.CarsLookup = new MultiSelectList(_context.Cars, "Id", "Info");
+
+            // Get the Driver CarIds from the Driver.Cars List
+            createUpdateDriverViewModel.CarIds = driver.Cars.Select(car => car.Id).ToList(); 
 
             return View(createUpdateDriverViewModel);
         }
@@ -124,7 +131,11 @@ namespace EN.SimTaxi.Mvc.Controllers
 
             if (ModelState.IsValid)
             {
-                var driver = await _context.Drivers.FindAsync(id);
+                var driver = await _context
+                                    .Drivers
+                                    .Include(driver => driver.Cars)
+                                    .Where(driver => driver.Id == id)
+                                    .SingleOrDefaultAsync();
 
                 if (driver == null) 
                 {
@@ -132,6 +143,8 @@ namespace EN.SimTaxi.Mvc.Controllers
                 }
 
                 _mapper.Map(createUpdateDriverViewModel, driver);
+
+                await UpdateDriverCars(driver, createUpdateDriverViewModel.CarIds);
 
                 try
                 {
