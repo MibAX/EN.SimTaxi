@@ -1,4 +1,5 @@
 ﻿using EN.SimTaxi.Mvc.Enums;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel.DataAnnotations;
 
@@ -19,10 +20,13 @@ namespace EN.SimTaxi.Mvc.Models.Drivers
         public Gender Gender { get; set; }
 
         [Display(Name = "Cars")]
-        public List<int> CarIds { get; set; } = []; // [4, 6, 8]
+        public List<int> CarIds { get; set; } = []; // [4, 8]
 
-        //===========================================================
 
+
+        //============= Those are for choosing from the Page and NOT to create/edit a driver ===================
+
+        [ValidateNever]
         public MultiSelectList CarsLookup { get; set; }
     }
 }

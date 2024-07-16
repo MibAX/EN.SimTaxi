@@ -80,11 +80,14 @@ namespace EN.SimTaxi.Mvc.Controllers
             {
                 var driver = _mapper.Map<CreateUpdateDriverViewModel, Driver>(createUpdateDriverViewModel);
 
+                await UpdateDriverCars(driver, createUpdateDriverViewModel.CarIds);
+
                 _context.Add(driver);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
 
+            createUpdateDriverViewModel.CarsLookup = new MultiSelectList(_context.Cars, "Id", "Info");
             return View(createUpdateDriverViewModel);
         }
 
@@ -179,7 +182,25 @@ namespace EN.SimTaxi.Mvc.Controllers
         private bool DriverExists(int id)
         {
             return _context.Drivers.Any(driver => driver.Id == id);
-        } 
+        }
+
+        private async Task UpdateDriverCars(Driver driver, List<int> carIds) // CarIds = [4, 8]
+        {
+            // TO DO
+            // Clear the Cars in the Driver entity
+            driver.Cars.Clear();
+
+
+            // Get Cars from the DB using the CarIds
+            var cars = await _context
+                                .Cars
+                                .Where(car => carIds.Contains(car.Id)) // [4, 8] => Car Id 4 and Car Id 8
+                                .ToListAsync();
+
+
+            // Add the Cars to the Driver.Cars List
+            driver.Cars.AddRange(cars);
+        }
 
         #endregion
     }
