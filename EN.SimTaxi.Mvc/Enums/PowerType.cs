@@ -3,8 +3,8 @@
     public enum PowerType
     {
         Ev,
-        Hybird,
-        Gaslone,
+        Hybrid,
+        Gasoline,
         Diesel
     }
 }

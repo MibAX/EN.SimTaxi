@@ -98,7 +98,11 @@ namespace EN.SimTaxi.Mvc.Controllers
                 return NotFound();
             }
 
-            var car = await _context.Cars.FindAsync(id);
+            var car = await _context
+                                .Cars
+                                .Include(car => car.Driver)
+                                .Where(car => car.Id == id)
+                                .SingleOrDefaultAsync();
 
             if (car == null)
             {
@@ -107,6 +111,8 @@ namespace EN.SimTaxi.Mvc.Controllers
 
 
             var createUpdateCarViewModel = _mapper.Map<Car, CreateUpdateCarViewModel>(car);
+
+            createUpdateCarViewModel.DriversLookup = new SelectList(_context.Drivers, "Id", "FullName");
 
             return View(createUpdateCarViewModel);
         }
@@ -156,6 +162,7 @@ namespace EN.SimTaxi.Mvc.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
+            createUpdateCarViewModel.DriversLookup = new SelectList(_context.Drivers, "Id", "FullName");
             return View(createUpdateCarViewModel);
         }
 
