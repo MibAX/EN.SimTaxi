@@ -5,6 +5,7 @@ using EN.SimTaxi.Mvc.Entities.Cars;
 using EN.SimTaxi.Mvc.Models.Cars;
 using System.Collections.Generic;
 using AutoMapper;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace EN.SimTaxi.Mvc.Controllers
 {
@@ -25,6 +26,7 @@ namespace EN.SimTaxi.Mvc.Controllers
 
         #region Actions
 
+        [HttpGet]
         public async Task<IActionResult> Index()
         {
             var cars = await _context
@@ -37,6 +39,7 @@ namespace EN.SimTaxi.Mvc.Controllers
             return View(listCarViewModel);
         }
 
+        [HttpGet]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -60,9 +63,14 @@ namespace EN.SimTaxi.Mvc.Controllers
             return View(carDetailsViewModel);
         }
 
+        [HttpGet]
         public IActionResult Create()
         {
-            return View();
+            var createUpdateCarViewModel = new CreateUpdateCarViewModel();
+
+            createUpdateCarViewModel.DriversLookup = new SelectList(_context.Drivers, "Id", "FullName");
+
+            return View(createUpdateCarViewModel);
         }
 
         [HttpPost]
@@ -78,6 +86,7 @@ namespace EN.SimTaxi.Mvc.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
+            createUpdateCarViewModel.DriversLookup = new SelectList(_context.Drivers, "Id", "FullName");
             return View(createUpdateCarViewModel);
         }
 
