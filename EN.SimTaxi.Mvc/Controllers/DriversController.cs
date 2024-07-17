@@ -114,9 +114,6 @@ namespace EN.SimTaxi.Mvc.Controllers
 
             createUpdateDriverViewModel.CarsLookup = new MultiSelectList(_context.Cars, "Id", "Info");
 
-            // Get the Driver CarIds from the Driver.Cars List
-            createUpdateDriverViewModel.CarIds = driver.Cars.Select(car => car.Id).ToList(); 
-
             return View(createUpdateDriverViewModel);
         }
 

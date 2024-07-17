@@ -10,7 +10,13 @@ namespace EN.SimTaxi.Mvc.AutoMapperProfiles
         {
             CreateMap<Driver, DriverViewModel>();
             CreateMap<Driver, DriverDetailsViewModel>();
-            CreateMap<CreateUpdateDriverViewModel, Driver>().ReverseMap();
+            CreateMap<CreateUpdateDriverViewModel, Driver>();
+
+            CreateMap<Driver, CreateUpdateDriverViewModel>()
+                .ForMember(createUpdateDriverViewModel => createUpdateDriverViewModel.CarIds,
+                    opts => 
+                        opts.MapFrom(driver => driver.Cars.Select(car => car.Id).ToList()));
+                    
         }
     }
 }
