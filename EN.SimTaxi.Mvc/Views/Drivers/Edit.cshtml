@@ -60,8 +60,8 @@
             <div class="col-md-4">
 
                 <div class="form-group">
-                    <label asp-for="CarIds" class="control-label"></label>
-                    <select asp-for="CarIds" class="form-control" asp-items="@Model.CarsLookup"></select>
+                    <label asp-for="CarIds" class="control-label d-block"></label>
+                    <select class="select-2 w-100" asp-for="CarIds" class="form-control" asp-items="@Model.CarsLookup"></select>
                     <span asp-validation-for="CarIds" class="text-danger"></span>
                 </div>
 
