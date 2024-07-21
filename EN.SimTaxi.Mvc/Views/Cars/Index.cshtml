@@ -70,11 +70,16 @@
                     <td>
                         @if (string.IsNullOrEmpty(car.DriverFullName))
                         {
-                            <span class="fst-italic">Not Assigned</span>
+                            <span class="fst-italic text-muted">
+                                n/a
+                            </span>
                         }
                         else
                         {
-                            @Html.DisplayFor(modelItem => car.DriverFullName)
+                            <a asp-controller="Drivers" asp-action="Details" asp-route-Id="@car.DriverId" class="text-success" target="_blank">
+                                <i class="fa-solid fa-circle-check"></i>
+                                @Html.DisplayFor(modelItem => car.DriverFullName)
+                            </a>
                         }
                     </td>
                     <td>

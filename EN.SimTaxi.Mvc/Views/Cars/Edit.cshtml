@@ -78,7 +78,9 @@
 
                 <div class="form-group">
                     <label asp-for="DriverId" class="control-label"></label>
-                    <select asp-for="DriverId" class="form-control" asp-items="@Model.DriversLookup"></select>
+                    <select asp-for="DriverId" class="form-control" asp-items="@Model.DriversLookup">
+                        <option value="">-- Select a Driver --</option>
+                    </select>
                     <span asp-validation-for="DriverId" class="text-danger"></span>
                 </div>
 

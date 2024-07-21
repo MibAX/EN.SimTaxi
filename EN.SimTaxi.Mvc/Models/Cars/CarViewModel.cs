@@ -23,5 +23,7 @@ namespace EN.SimTaxi.Mvc.Models.Cars
 
         [Display(Name = "Driver Name")]
         public string DriverFullName { get; set; }
+
+        public int? DriverId { get; set; }
     }
 }

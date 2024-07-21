@@ -25,8 +25,10 @@ namespace EN.SimTaxi.Mvc.Models.Cars
         [Display(Name = "Car Type")]
         public CarType CarType { get; set; }
 
+
+        [ValidateNever]
         [Display(Name = "Driver")]
-        public int DriverId { get; set; }
+        public int? DriverId { get; set; }
 
         //============= Those are for choosing from the Page and NOT to create/edit a Car ===================
 
