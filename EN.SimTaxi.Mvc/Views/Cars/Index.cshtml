@@ -122,6 +122,39 @@
                             </div>
                         </div>
 
+                        @if (car.DriverId != null)
+                        {
+                            <a class="ms-2 text-decoration-none text-danger pointer" title="Unassign" data-bs-toggle="modal" data-bs-target="#unassignCar_@car.Id">
+                                <i class="fa-solid fa-user-xmark"></i>
+                            </a>
+                        }
+
+                        <!-- Unassign Modal -->
+                        <div class="modal fade" id="unassignCar_@car.Id" tabindex="-1" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Unassign Car</h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <h5>
+                                            Are you sure you want to unassign <span class="text-danger">@car.Model - (@car.PlateNumber)</span>
+                                            that is assign to driver <span class="text-primary">@car.DriverFullName</span>?
+                                        </h5>
+                                    </div>
+                                    <div class="modal-footer">
+
+                                        <form asp-action="UnassignCar" class="mt-4">
+                                            <input type="hidden" name="id" value="@car.Id" />
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                            <button type="submit" class="btn btn-danger ms-2">Unassign</button>
+                                        </form>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </td>
                 </tr>
             }

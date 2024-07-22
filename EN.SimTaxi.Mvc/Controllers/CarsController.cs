@@ -183,6 +183,23 @@ namespace EN.SimTaxi.Mvc.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> UnassignCar(int id)
+        {
+            var car = await _context
+                                .Cars
+                                .FindAsync(id);
+
+            if (car != null) 
+            {
+                car.DriverId = null;
+                await _context.SaveChangesAsync();
+            }
+
+            return RedirectToAction(nameof(Index));
+        }
+
         #endregion
 
         #region Private Methods
