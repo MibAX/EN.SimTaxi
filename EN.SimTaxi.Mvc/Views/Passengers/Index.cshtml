@@ -1,4 +1,5 @@
-﻿@model IEnumerable<EN.SimTaxi.Mvc.Entities.Passengers.Passenger>
+﻿@using EN.SimTaxi.Mvc.Models.Passengers
+@model IEnumerable<PassengerViewModel>
 
 @{
     ViewData["Title"] = "Passenger";
@@ -19,16 +20,13 @@
         <thead>
             <tr>
                 <th>
-                    @Html.DisplayNameFor(model => model.FirstName)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.LastName)
+                    @Html.DisplayNameFor(model => model.FullName)
                 </th>
                 <th>
                     @Html.DisplayNameFor(model => model.Gender)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.DateOfBirth)
+                    @Html.DisplayNameFor(model => model.Age)
                 </th>
                 <th>
                     @Html.DisplayNameFor(model => model.MobileNumber)
@@ -41,16 +39,13 @@
             {
                 <tr>
                     <td>
-                        @Html.DisplayFor(modelItem => passenger.FirstName)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => passenger.LastName)
+                        @Html.DisplayFor(modelItem => passenger.FullName)
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => passenger.Gender)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => passenger.DateOfBirth)
+                        @Html.DisplayFor(modelItem => passenger.Age)
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => passenger.MobileNumber)

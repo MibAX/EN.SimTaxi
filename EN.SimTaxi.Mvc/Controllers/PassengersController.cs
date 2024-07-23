@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using EN.SimTaxi.Mvc.Data;
 using EN.SimTaxi.Mvc.Entities.Passengers;
 using AutoMapper;
+using EN.SimTaxi.Mvc.Models.Passengers;
 
 namespace EN.SimTaxi.Mvc.Controllers
 {
@@ -27,9 +28,11 @@ namespace EN.SimTaxi.Mvc.Controllers
         {
             var passengers = await _context
                                         .Passengers
-                                        .ToListAsync();        
+                                        .ToListAsync();
 
-            return View(passengers);
+            var passengerVMs = _mapper.Map<List<Passenger>, List<PassengerViewModel>>(passengers);
+
+            return View(passengerVMs);
         }
 
         public async Task<IActionResult> Details(int? id)
@@ -39,14 +42,19 @@ namespace EN.SimTaxi.Mvc.Controllers
                 return NotFound();
             }
 
-            var passenger = await _context.Passengers
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var passenger = await _context
+                                    .Passengers
+                                    .Where(passenger => passenger.Id == id)
+                                    .SingleOrDefaultAsync();
+
             if (passenger == null)
             {
                 return NotFound();
             }
 
-            return View(passenger);
+            var passengerVM = _mapper.Map<Passenger, PassengerDetailsViewModel>(passenger);
+
+            return View(passengerVM);
         }
 
         public IActionResult Create()
@@ -56,15 +64,19 @@ namespace EN.SimTaxi.Mvc.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,FirstName,LastName,Gender,DateOfBirth,MobileNumber")] Passenger passenger)
+        public async Task<IActionResult> Create(CreateUpdatePassengerViewModel createUpdatePassengerViewModel)
         {
             if (ModelState.IsValid)
             {
+                var passenger = _mapper.Map<CreateUpdatePassengerViewModel, Passenger>(createUpdatePassengerViewModel);
+
                 _context.Add(passenger);
                 await _context.SaveChangesAsync();
+
                 return RedirectToAction(nameof(Index));
             }
-            return View(passenger);
+
+            return View(createUpdatePassengerViewModel);
         }
 
         public async Task<IActionResult> Edit(int? id)
@@ -74,25 +86,44 @@ namespace EN.SimTaxi.Mvc.Controllers
                 return NotFound();
             }
 
-            var passenger = await _context.Passengers.FindAsync(id);
+            var passenger = await _context
+                                    .Passengers // TO DO include Booking Entity
+                                    .FindAsync(id);
+
             if (passenger == null)
             {
                 return NotFound();
             }
-            return View(passenger);
+
+            var createUpdatePassengerVM = _mapper.Map<Passenger, CreateUpdatePassengerViewModel>(passenger);
+
+            return View(createUpdatePassengerVM);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,FirstName,LastName,Gender,DateOfBirth,MobileNumber")] Passenger passenger)
+        public async Task<IActionResult> Edit(int id, CreateUpdatePassengerViewModel createUpdatePassengerViewModel)
         {
-            if (id != passenger.Id)
+            if (id != createUpdatePassengerViewModel.Id)
             {
                 return NotFound();
             }
 
             if (ModelState.IsValid)
             {
+                // TO DO get the passenger from the database
+                var passenger = await _context
+                                        .Passengers
+                                        .FindAsync(id); // TO DO change to include bookings
+
+                if (passenger == null)
+                {
+                    return NotFound();
+                }
+
+                // TO DO patch (copy) the createUpdatePassengerViewModel into passenger
+                _mapper.Map(createUpdatePassengerViewModel, passenger);
+
                 try
                 {
                     _context.Update(passenger);
@@ -100,7 +131,7 @@ namespace EN.SimTaxi.Mvc.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!PassengerExists(passenger.Id))
+                    if (!PassengerExists(createUpdatePassengerViewModel.Id))
                     {
                         return NotFound();
                     }
@@ -109,9 +140,11 @@ namespace EN.SimTaxi.Mvc.Controllers
                         throw;
                     }
                 }
+
                 return RedirectToAction(nameof(Index));
             }
-            return View(passenger);
+
+            return View(createUpdatePassengerViewModel);
         }
 
         [HttpPost, ActionName("Delete")]
