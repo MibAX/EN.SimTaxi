@@ -3,12 +3,13 @@ using Microsoft.EntityFrameworkCore;
 using EN.SimTaxi.Mvc.Data;
 using EN.SimTaxi.Mvc.Entities.Cars;
 using EN.SimTaxi.Mvc.Models.Cars;
-using System.Collections.Generic;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Authorization;
 
 namespace EN.SimTaxi.Mvc.Controllers
 {
+    //[Authorize]
     public class CarsController : Controller
     {
         #region Data and Constructor
@@ -27,6 +28,7 @@ namespace EN.SimTaxi.Mvc.Controllers
         #region Actions
 
         [HttpGet]
+        //[AllowAnonymous]
         public async Task<IActionResult> Index()
         {
             var cars = await _context
