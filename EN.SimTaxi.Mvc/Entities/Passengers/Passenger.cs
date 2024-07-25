@@ -1,4 +1,5 @@
-﻿using EN.SimTaxi.Mvc.Enums;
+﻿using EN.SimTaxi.Mvc.Entities.Bookings;
+using EN.SimTaxi.Mvc.Enums;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EN.SimTaxi.Mvc.Entities.Passengers
@@ -11,6 +12,9 @@ namespace EN.SimTaxi.Mvc.Entities.Passengers
         public Gender Gender { get; set; }
         public DateTime DateOfBirth { get; set; }
         public string MobileNumber { get; set; }
+
+
+        public List<Booking> Bookings { get; set; } = [];
 
         //============= Not Mapped ===============
 
