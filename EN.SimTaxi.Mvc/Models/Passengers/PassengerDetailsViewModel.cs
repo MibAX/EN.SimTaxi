@@ -16,5 +16,7 @@ namespace EN.SimTaxi.Mvc.Models.Passengers
 
         [Display(Name = "Mobile Number")]
         public string MobileNumber { get; set; }
+
+        // TO DO add bookings
     }
 }

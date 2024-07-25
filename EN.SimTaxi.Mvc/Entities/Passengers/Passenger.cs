@@ -24,7 +24,9 @@ namespace EN.SimTaxi.Mvc.Entities.Passengers
         }
 
         [NotMapped]
-        public int Age { get
+        public int Age
+        {
+            get
             {
                 return DateTime.Now.Year - DateOfBirth.Year;
             }
