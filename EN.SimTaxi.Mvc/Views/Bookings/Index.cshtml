@@ -1,0 +1,116 @@
+﻿@using EN.SimTaxi.Mvc.Models.Bookings
+@model IEnumerable<BookingViewModel>
+
+@{
+    ViewData["Title"] = "Bookings";
+}
+
+<div class="container">
+
+    <div class="d-flex justify-content-between align-items-center">
+
+        <h1>Bookings</h1>
+
+        <a class="btn btn-primary" asp-action="Create">Create a New Booking</a>
+
+    </div>
+
+    <hr />
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Id)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FromAddress)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ToAddress)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.BookingTime)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CarInfo)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DriverFullName)
+                </th>
+                <th>
+                    Actions
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var booking in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => booking.Id)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => booking.FromAddress)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => booking.ToAddress)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => booking.BookingTime)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => booking.CarInfo)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => booking.DriverFullName)
+                    </td>
+                    <td>
+                    <td>
+
+                        <a asp-action="Edit" asp-route-id="@booking.Id" class="text-decoration-none" title="Edit">
+                            <i class="fa-solid fa-pen"></i>
+                        </a>
+
+                        <a asp-action="Details" asp-route-id="@booking.Id" class="ms-2 text-decoration-none text-info" title="Details">
+                            <i class="fa-solid fa-circle-info"></i>
+                        </a>
+
+                        <a class="ms-2 text-decoration-none text-danger pointer" title="Delete" data-bs-toggle="modal" data-bs-target="#deleteCar_@booking.Id">
+                            <i class="fa-solid fa-trash"></i>
+                        </a>
+
+                        <!-- Delete Modal -->
+                        <div class="modal fade" id="deleteCar_@booking.Id" tabindex="-1" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Delete Booking</h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <h5>
+                                            Are you sure you want to delete Booking <span class="text-danger">#@booking.Id</span>?
+                                        </h5>
+                                    </div>
+                                    <div class="modal-footer">
+
+                                        <form asp-action="Delete" class="mt-4">
+                                            <input type="hidden" name="id" value="@booking.Id" />
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                            <button type="submit" class="btn btn-danger ms-2">Delete</button>
+                                        </form>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </td>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+</div>
