@@ -17,7 +17,7 @@
 
     <hr />
 
-    <table class="table">
+    <table class="table table-striped table-hover">
         <thead>
             <tr>
                 <th>
@@ -57,7 +57,8 @@
                         @Html.DisplayFor(modelItem => booking.ToAddress)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => booking.BookingTime)
+                        @* @Html.DisplayFor(modelItem => booking.BookingTime) *@
+                        @booking.BookingTime.ToString("ddd, dd MMM yyyy | hh:mm tt")
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => booking.CarInfo)
@@ -65,9 +66,8 @@
                     <td>
                         @Html.DisplayFor(modelItem => booking.DriverFullName)
                     </td>
-                    <td>
-                    <td>
 
+                    <td>
                         <a asp-action="Edit" asp-route-id="@booking.Id" class="text-decoration-none" title="Edit">
                             <i class="fa-solid fa-pen"></i>
                         </a>
@@ -106,7 +106,6 @@
                             </div>
                         </div>
 
-                    </td>
                     </td>
                 </tr>
             }

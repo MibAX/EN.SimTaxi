@@ -48,16 +48,22 @@ namespace EN.SimTaxi.Mvc.Controllers
                 return NotFound();
             }
 
-            var booking = await _context.Bookings
-                .Include(b => b.Car)
-                .Include(b => b.Driver)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var booking = await _context
+                                    .Bookings
+                                    .Include(booking => booking.Car)
+                                    .Include(booking => booking.Driver)
+                                    .Include(booking => booking.Passengers)
+                                    .Where(booking => booking.Id == id)
+                                    .SingleOrDefaultAsync();
+
             if (booking == null)
             {
-                return NotFound();
+                return NotFound(); // 404
             }
 
-            return View(booking);
+            var bookingDetailsVM = _mapper.Map<Booking, BookingDetailsViewModel>(booking);
+
+            return View(bookingDetailsVM);
         }
 
         [HttpGet]
@@ -74,17 +80,22 @@ namespace EN.SimTaxi.Mvc.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,FromAddress,ToAddress,BookingTime,CarId,DriverId")] Booking booking)
+        public async Task<IActionResult> Create(CreateUpdateBookingViewModel createUpdateBookingVM)
         {
             if (ModelState.IsValid)
             {
+                var booking = _mapper.Map<CreateUpdateBookingViewModel, Booking>(createUpdateBookingVM);
+
                 _context.Add(booking);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CarId"] = new SelectList(_context.Cars, "Id", "Id", booking.CarId);
-            ViewData["DriverId"] = new SelectList(_context.Drivers, "Id", "Id", booking.DriverId);
-            return View(booking);
+
+            createUpdateBookingVM.CarLookup = new SelectList(_context.Cars, "Id", "Info");
+            createUpdateBookingVM.DriverLookup = new SelectList(_context.Drivers, "Id", "FullName");
+            createUpdateBookingVM.PassengerLookup = new MultiSelectList(_context.Passengers, "Id", "FullName");
+
+            return View(createUpdateBookingVM);
         }
 
         [HttpGet]
