@@ -88,6 +88,8 @@ namespace EN.SimTaxi.Mvc.Controllers
 
                 booking.Price = GetBookingPrice(booking);
 
+                await UpdateBookingPassengers(booking, createUpdateBookingVM.PassengerIds);
+
                 _context.Add(booking);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -186,7 +188,22 @@ namespace EN.SimTaxi.Mvc.Controllers
             decimal maxValue = 100.0m;
             decimal randomPrice = (decimal)(random.NextDouble() * (double)(maxValue - minValue) + (double)minValue);
 
-            return randomPrice; // A random number between 10 and 100
+            return Math.Round(randomPrice, 2); // A random number between 10 and 100
+        }
+
+        private async Task UpdateBookingPassengers(Booking booking, List<int> passengerIds)
+        {
+            // TO DO: Clear Passengers from Booking
+            booking.Passengers.Clear();
+
+            // TO DO: Get the Passengers from the database using passengerIds
+            var passengers = await _context
+                                        .Passengers
+                                        .Where(passenger => passengerIds.Contains(passenger.Id)) // [5 ,6] => [ {5, Asad}, {6, Natasha }]
+                                        .ToListAsync();
+
+            // TO DO: Add the loaded Passenger to the Booking
+            booking.Passengers.AddRange(passengers);
         }
 
         #endregion
