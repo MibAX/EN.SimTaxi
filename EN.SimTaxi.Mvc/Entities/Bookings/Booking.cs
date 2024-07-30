@@ -1,6 +1,7 @@
 ﻿using EN.SimTaxi.Mvc.Entities.Cars;
 using EN.SimTaxi.Mvc.Entities.Drivers;
 using EN.SimTaxi.Mvc.Entities.Passengers;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EN.SimTaxi.Mvc.Entities.Bookings
 {
@@ -11,7 +12,9 @@ namespace EN.SimTaxi.Mvc.Entities.Bookings
         public string ToAddress { get; set; }
         public DateTime BookingTime { get; set; }
 
-        
+        [Column(TypeName = "decimal(5, 2)")]
+        public decimal Price { get; set; }
+
 
         public int? CarId { get; set; }
         public Car Car { get; set; }

@@ -86,6 +86,8 @@ namespace EN.SimTaxi.Mvc.Controllers
             {
                 var booking = _mapper.Map<CreateUpdateBookingViewModel, Booking>(createUpdateBookingVM);
 
+                booking.Price = GetBookingPrice(booking);
+
                 _context.Add(booking);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -171,7 +173,21 @@ namespace EN.SimTaxi.Mvc.Controllers
         private bool BookingExists(int id)
         {
             return _context.Bookings.Any(e => e.Id == id);
-        } 
+        }
+
+        private decimal GetBookingPrice(Booking booking)
+        {
+            // TO DO this is a simulation using the random class 
+            // in a real project there will be code for a pricing engine that 
+            // depeneds on GoogleMaps integration
+
+            Random random = new Random();
+            decimal minValue = 10.0m;
+            decimal maxValue = 100.0m;
+            decimal randomPrice = (decimal)(random.NextDouble() * (double)(maxValue - minValue) + (double)minValue);
+
+            return randomPrice; // A random number between 10 and 100
+        }
 
         #endregion
     }

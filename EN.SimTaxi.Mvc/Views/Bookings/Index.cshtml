@@ -30,6 +30,9 @@
                     @Html.DisplayNameFor(model => model.ToAddress)
                 </th>
                 <th>
+                    @Html.DisplayNameFor(model => model.Price)
+                </th>
+                <th>
                     @Html.DisplayNameFor(model => model.BookingTime)
                 </th>
                 <th>
@@ -57,14 +60,30 @@
                         @Html.DisplayFor(modelItem => booking.ToAddress)
                     </td>
                     <td>
-                        @* @Html.DisplayFor(modelItem => booking.BookingTime) *@
+                        @Html.DisplayFor(modelItem => booking.PriceFormatted)
+                    </td>
+                    <td>
                         @booking.BookingTime.ToString("ddd, dd MMM yyyy | hh:mm tt")
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => booking.CarInfo)
+                        @if (String.IsNullOrWhiteSpace(booking.CarInfo))
+                        {
+                            <i class="text-muted">n/a</i>
+                        }
+                        else
+                        {
+                            @Html.DisplayFor(modelItem => booking.CarInfo)
+                        }
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => booking.DriverFullName)
+                        @if (String.IsNullOrWhiteSpace(booking.DriverFullName))
+                        {
+                            <i class="text-muted">n/a</i>
+                        }
+                        else
+                        {
+                            @Html.DisplayFor(modelItem => booking.DriverFullName)
+                        }
                     </td>
 
                     <td>
