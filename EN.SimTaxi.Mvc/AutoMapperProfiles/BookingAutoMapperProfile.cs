@@ -13,6 +13,11 @@ namespace EN.SimTaxi.Mvc.AutoMapperProfiles
             CreateMap<Booking, BookingDetailsViewModel>();
 
             CreateMap<CreateUpdateBookingViewModel, Booking>();
+
+            CreateMap<Booking, CreateUpdateBookingViewModel>()
+                .ForMember(createUpdateBookingViewModel => createUpdateBookingViewModel.PassengerIds
+                    , opts =>
+                        opts.MapFrom(booking => booking.Passengers.Select(passenger => passenger.Id)));
         }
     }
 }

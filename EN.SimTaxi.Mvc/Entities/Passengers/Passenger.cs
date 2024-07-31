@@ -6,7 +6,7 @@ namespace EN.SimTaxi.Mvc.Entities.Passengers
 {
     public class Passenger
     {
-        public int Id { get; set; }
+        public int Id { get; set; } // [5, 6]
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public Gender Gender { get; set; }

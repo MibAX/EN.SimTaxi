@@ -25,7 +25,7 @@ namespace EN.SimTaxi.Mvc.Models.Bookings
         public int? DriverId { get; set; }
 
         [Display(Name = "Passengers")]
-        public List<int> PassengerIds { get; set; } = [];
+        public List<int> PassengerIds { get; set; } = []; // [5, 6]
 
         //============= Those are for choosing from the Page and NOT to create/edit a Booking ===================
 

@@ -103,34 +103,67 @@ namespace EN.SimTaxi.Mvc.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(int? id) // 123456
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var booking = await _context.Bookings.FindAsync(id);
+            var booking = await _context
+                                    .Bookings
+                                    .Include(booking => booking.Passengers)
+                                    .Where(booking => booking.Id == id)
+                                    .SingleOrDefaultAsync();
+
             if (booking == null)
             {
-                return NotFound();
+                return NotFound(); // 404
             }
-            ViewData["CarId"] = new SelectList(_context.Cars, "Id", "Id", booking.CarId);
-            ViewData["DriverId"] = new SelectList(_context.Drivers, "Id", "Id", booking.DriverId);
-            return View(booking);
+
+            var createUpdateBookingVM = _mapper.Map<Booking, CreateUpdateBookingViewModel>(booking);
+
+            createUpdateBookingVM.CarLookup = new SelectList(_context.Cars, "Id", "Info");
+            createUpdateBookingVM.DriverLookup = new SelectList(_context.Drivers, "Id", "FullName");
+            createUpdateBookingVM.PassengerLookup = new MultiSelectList(_context.Passengers, "Id", "FullName");
+
+            return View(createUpdateBookingVM);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,FromAddress,ToAddress,BookingTime,CarId,DriverId")] Booking booking)
+        public async Task<IActionResult> Edit(int id, CreateUpdateBookingViewModel createUpdateBookingVM)
         {
-            if (id != booking.Id)
+            if (id != createUpdateBookingVM.Id)
             {
                 return NotFound();
             }
 
             if (ModelState.IsValid)
             {
+                // TO DO Load the Booking including the Passengers from the DB
+                var booking = await _context
+                                        .Bookings
+                                        .Include(booking => booking.Passengers)
+                                        .Where(booking => booking.Id == id)
+                                        .SingleOrDefaultAsync();
+
+                if(booking == null)
+                {
+                    return NotFound(); // 404
+                }
+
+
+                // Patch (copy) the values from CreateUpdateBookingViewModel => Booking 
+                _mapper.Map<CreateUpdateBookingViewModel, Booking>(createUpdateBookingVM, booking);
+
+                // Update the booking passengers
+                await UpdateBookingPassengers(booking, createUpdateBookingVM.PassengerIds);
+
+                // Update the price
+                booking.Price = GetBookingPrice(booking);
+
+
                 try
                 {
                     _context.Update(booking);
@@ -147,11 +180,15 @@ namespace EN.SimTaxi.Mvc.Controllers
                         throw;
                     }
                 }
+
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CarId"] = new SelectList(_context.Cars, "Id", "Id", booking.CarId);
-            ViewData["DriverId"] = new SelectList(_context.Drivers, "Id", "Id", booking.DriverId);
-            return View(booking);
+
+            createUpdateBookingVM.CarLookup = new SelectList(_context.Cars, "Id", "Info");
+            createUpdateBookingVM.DriverLookup = new SelectList(_context.Drivers, "Id", "FullName");
+            createUpdateBookingVM.PassengerLookup = new MultiSelectList(_context.Passengers, "Id", "FullName");
+
+            return View(createUpdateBookingVM);
         }
 
         [HttpPost, ActionName("Delete")]
