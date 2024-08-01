@@ -226,6 +226,27 @@ namespace EN.SimTaxi.Mvc.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [HttpPost]
+        public async Task<IActionResult> Unpay(int id)
+        {
+            var booking = await _context
+                                .Bookings
+                                .FindAsync(id);
+
+            if(booking == null)
+            {
+                return NotFound();
+            }
+
+            booking.IsPaid = false;
+            booking.PaymentDate = null;
+
+            _context.Update(booking);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index));
+        }
+
         #endregion
 
         #region Private Methods
