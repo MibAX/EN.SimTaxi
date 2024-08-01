@@ -26,6 +26,12 @@ namespace EN.SimTaxi.Mvc.Models.Bookings
         [Column(TypeName = "decimal(5, 2)")]
         public decimal Price { get; set; }
 
+        [Display(Name = "Paid")]
+        public bool IsPaid { get; set; } // true = paid #### false = not paid
+
+        [Display(Name = "Payment Date")]
+        public DateTime? PaymentDate { get; set; }
+
         public string PriceFormatted
         {
             get

@@ -42,6 +42,9 @@
                     @Html.DisplayNameFor(model => model.DriverFullName)
                 </th>
                 <th>
+                    @Html.DisplayNameFor(model => model.IsPaid)
+                </th>
+                <th>
                     Actions
                 </th>
             </tr>
@@ -83,6 +86,17 @@
                         else
                         {
                             @Html.DisplayFor(modelItem => booking.DriverFullName)
+                        }
+                    </td>
+
+                    <td>
+                        @if (booking.IsPaid) // true
+                        {
+                            <i class="fa-solid fa-circle-check text-success" title="Paid On: @booking.PaymentDate.Value.ToString("ddd, dd MMM yyyy | hh:mm tt")"></i>
+                        }
+                        else // false
+                        {
+                            <i class="fa-solid fa-circle-xmark text-danger" title="Not Paid"></i>
                         }
                     </td>
 

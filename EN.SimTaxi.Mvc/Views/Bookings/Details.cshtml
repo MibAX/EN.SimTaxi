@@ -37,6 +37,24 @@
             </dd>
 
             <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.IsPaid)
+            </dt>
+            <dd class="col-sm-10">
+
+                @if (Model.IsPaid) // true
+                {
+                    <i class="fa-solid fa-circle-check text-success"></i>
+                    <span class="fw-bold text-muted">ON: @Model.PaymentDate.Value.ToString("ddd, dd MMM yyyy | hh:mm tt")
+                    </span>
+                }
+                else // false
+                {
+                    <i class="fa-solid fa-circle-xmark text-danger" title="Not Paid"></i>
+                }
+                
+            </dd>
+
+            <dt class="col-sm-2">
                 @Html.DisplayNameFor(model => model.BookingTime)
             </dt>
             <dd class="col-sm-10">

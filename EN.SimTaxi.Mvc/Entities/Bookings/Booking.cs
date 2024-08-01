@@ -14,6 +14,8 @@ namespace EN.SimTaxi.Mvc.Entities.Bookings
 
         [Column(TypeName = "decimal(5, 2)")]
         public decimal Price { get; set; }
+        public bool IsPaid { get; set; } // true = paid #### false = not paid
+        public DateTime? PaymentDate { get; set; }
 
 
         public int? CarId { get; set; }
